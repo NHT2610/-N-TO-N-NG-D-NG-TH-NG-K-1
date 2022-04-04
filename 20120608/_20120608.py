@@ -51,30 +51,35 @@ def back_substitution(A):
     result = [0] * (ncol - 1)
     Gauss_elimination(A)
     #Kiểm tra hệ có vô nghiệm hay không
+    count = 0 #Biến đếm số dòng khác 0
     index = 0
     for i in range(nrow - 1, -1, -1):
        for j in range(ncol):
            if A[i][j] != 0 and j != ncol - 1:
+               count += 1
                break
            elif A[i][j] != 0:
                index = ncol - 1
            if index == ncol - 1:
                print("Hệ phương trình vô nghiệm!")
                return
-    #Trường hợp số ẩn nhỏ hơn hoặc bằng số phương trình 
-    if nrow >= ncol - 1:
+    #Trường hợp hệ có nghiệm duy nhất
+    if count == ncol - 1:
         for i in range(ncol - 2, -1, -1):
-            
-            #Trường hợp hệ có nghiệm duy nhất
             sum = 0
             for j in range(ncol - 2, i, -1):
                 sum += A[i][j] * result[j]
             result[i] = A[i][ncol - 1] - sum
-    #Trường hợp số ẩn lớn số phương trình 
-    else:        
-        for i in range(nrow - 1, -1, -1):
-            for j in range(ncol - 2, i, -1):
-                result[i] -= A[i][j] * result[j]
+    #Trường hợp hệ có vô số nghiệm
+    elif count < ncol - 1:
+        numberOfTemp = ncol - 1 - count
+        coefficients = []
+        for i in range(numberOfTemp):
+            coefficients.append(A[numberOfTemp - 1 - i][ncol - 1 - i])
+        for i in range(ncol - 2, -1, -1):
+            for j in range(count - 1, -1, -1):
+                pass
+        
     #Xuất giá trị nghiệm ra màn hình
     print("Hệ phương trình có nghiệm: ")
     for i in range(nrow):
