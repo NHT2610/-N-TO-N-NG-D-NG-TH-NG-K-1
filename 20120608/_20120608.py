@@ -48,27 +48,34 @@
 def back_substitution(A):
     nrow = len(A)
     ncol = len(A[0])
-    result = [0] * nrow
+    result = [0] * (ncol - 1)
     Gauss_elimination(A)
-    #Trường hợp số ẩn bằng số phương trình
-    if nrow == ncol - 1:
-        index = 0
-        for i in range(nrow - 1, -1, -1):
-            for j in range(ncol):
-                if A[i][j] != 0 and j != ncol - 1:
-                    continue
-                elif A[i][j] != 0:
-                    index = ncol - 1
-                    break
-        if index == ncol - 1:
-            print("Hệ phương trình vô nghiệm!")
-            return
-    #Trường hợp số ẩn khác số phương trình
+    #Kiểm tra hệ có vô nghiệm hay không
+    index = 0
+    for i in range(nrow - 1, -1, -1):
+       for j in range(ncol):
+           if A[i][j] != 0 and j != ncol - 1:
+               break
+           elif A[i][j] != 0:
+               index = ncol - 1
+           if index == ncol - 1:
+               print("Hệ phương trình vô nghiệm!")
+               return
+    #Trường hợp số ẩn nhỏ hơn hoặc bằng số phương trình 
+    if nrow >= ncol - 1:
+        for i in range(ncol - 2, -1, -1):
+            
+            #Trường hợp hệ có nghiệm duy nhất
+            sum = 0
+            for j in range(ncol - 2, i, -1):
+                sum += A[i][j] * result[j]
+            result[i] = A[i][ncol - 1] - sum
+    #Trường hợp số ẩn lớn số phương trình 
     else:        
         for i in range(nrow - 1, -1, -1):
             for j in range(ncol - 2, i, -1):
                 result[i] -= A[i][j] * result[j]
-    
+    #Xuất giá trị nghiệm ra màn hình
     print("Hệ phương trình có nghiệm: ")
     for i in range(nrow):
         print("x" + str(i + 1) + " = " + str(result[i]))
@@ -79,18 +86,19 @@ B = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 C = [[1, 1, 0, 1, 0], [0, 1, 1, 2, 0], [1, 0, 1, 1, 0]]
 D = [[1, 1, 1, 2], [1, 1, 2, 3], [1, 2, 3, 1]]
 E = [[1, 2, 0, 2, 6], [3, 5, -1, 6, 17], [2, 4, 1, 2, 12], [2, 0, -7, 11, 7]]
-print(B)
-Gauss_elimination(B)
-print(B)
-print(A)
-Gauss_elimination(A)
-print(A)
-print(C)
-Gauss_elimination(C)
-print(C)
-print(D)
-Gauss_elimination(D)
-print(D)
-print(E)
-Gauss_elimination(E)
-print(E)
+#print(B)
+#Gauss_elimination(B)
+#print(B)
+#print(A)
+#Gauss_elimination(A)
+#print(A)
+#print(C)
+#Gauss_elimination(C)
+#print(C)
+#print(D)
+#Gauss_elimination(D)
+#print(D)
+#print(E)
+#Gauss_elimination(E)
+#print(E)
+back_substitution(E)
