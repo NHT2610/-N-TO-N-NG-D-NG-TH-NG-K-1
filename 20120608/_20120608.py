@@ -49,10 +49,9 @@ def back_substitution(A):
     nrow = len(A)
     ncol = len(A[0])
     result = [0] * (ncol - 1)
-    Gauss_elimination(A)
     #Kiểm tra hệ có vô nghiệm hay không
     count = 0 #Biến đếm số dòng khác 0
-    index = 0
+    index = 0 #Chỉ số cột có phần tử != 0 đầu tiên trong dòng
     for i in range(nrow - 1, -1, -1):
        for j in range(ncol):
            if A[i][j] != 0 and j != ncol - 1:
@@ -70,20 +69,46 @@ def back_substitution(A):
             for j in range(ncol - 2, i, -1):
                 sum += A[i][j] * result[j]
             result[i] = A[i][ncol - 1] - sum
+        #Xuất giá trị nghiệm ra màn hình
+        print("Hệ phương trình có nghiệm duy nhất: ")
+        for i in range(ncol - 1):
+            print("x" + str(i + 1) + " = " + str(result[i]))        
     #Trường hợp hệ có vô số nghiệm
     elif count < ncol - 1:
         numberOfTemp = ncol - 1 - count
-        coefficients = []
-        for i in range(numberOfTemp):
-            coefficients.append(A[numberOfTemp - 1 - i][ncol - 1 - i])
-        for i in range(ncol - 2, -1, -1):
-            for j in range(count - 1, -1, -1):
-                pass
+        coefficients = [[]] * (ncol - 2) #Lưu hệ số các ẩn tự do
+        for i in range(count - 1, -1, -1):
+            index = i
+            for j in range(count - 1, ncol - 1):
+                if A[i][j] != 0:
+                    index = j
+                    break
+            sum = ""    
+            j = index + 1
+            while j < ncol - 2:
+                temp = [0] * (ncol - 1)
+                temp[j] = A[i][j]
+                coefficients[j] = temp
+                result[j] = "a" + str(j)
+                j += 1
+                
+            else:
+                temp = [0] * (ncol - 1)
+                for k in range(index + 1, ncol - 2):
+                    temp[k] = -coefficients[k][k] 
+                    result[i] += " - " + str(abs(coefficients[k][i])) + "a" + str(k + 1)
+                temp[ncol - 2] = A[i][ncol - 1]
+                coefficients[index] = temp    
+            for j in range(index + 1, ncol - 2):
+                result[j] = "a" + str(j)
+                sum += str(result[j])
+            
+        #Xuất giá trị nghiệm ra màn hình
+        print("Hệ phương trình có vô số nghiệm có dạng: ")
+        for i in range(ncol - 1):
+            print("x" + str(i + 1) + " = " + str(result[i]))
         
-    #Xuất giá trị nghiệm ra màn hình
-    print("Hệ phương trình có nghiệm: ")
-    for i in range(nrow):
-        print("x" + str(i + 1) + " = " + str(result[i]))
+    
 
                  
 A = [[0, 0, -2, 0, 7, 12], [2, 4, -10, 6, 12, 28], [2, 4, -5, 6, -5, -1]]
@@ -106,4 +131,5 @@ E = [[1, 2, 0, 2, 6], [3, 5, -1, 6, 17], [2, 4, 1, 2, 12], [2, 0, -7, 11, 7]]
 #print(E)
 #Gauss_elimination(E)
 #print(E)
+Gauss_elimination(E)
 back_substitution(E)
