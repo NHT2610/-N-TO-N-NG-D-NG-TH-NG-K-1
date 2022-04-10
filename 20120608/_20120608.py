@@ -14,11 +14,11 @@ def Gauss_elimination(A):
     pivotRow = -1
     for col in range(ncol - 1):
         pivotRow += 1
+        if pivotRow >= nrow and zeros == 0:
+            break
         #Kiểm tra cột trước đó có bằng 0 hay không
         if zeros == 1 and col != 0:
-            pivotRow = col - 1
-        if pivotRow >= nrow:
-            pivotRow = nrow - 1
+            pivotRow -= 1
         #Trường hợp phần tử (có cùng chỉ số dòng và cột) != 0
         if A[pivotRow][col] != 0:
             zeros = 0 #Cột này != 0
@@ -94,13 +94,15 @@ def back_substitution(A):
                 if A[i][j] != 0 and first == 0:
                     solve = j
                     first = 1
-                elif A[i][j] != 0 and used[j] == 0:
+                elif first != 0 and used[j] == 0:
                     result[j] = "a" + str(j + 1)
                     used[j] = 1
             if A[i][ncol - 1] - int(A[i][ncol - 1]) == 0:                     
                 result[solve] = str(int(A[i][ncol - 1]))
+                used[solve] = 1
             else:
                 result[solve] = str(A[i][ncol - 1])
+                used[solve] = 1
             for j in range(solve + 1, ncol - 1):
                 if A[i][j] > 0:
                     if A[i][j] != 1:
@@ -109,7 +111,7 @@ def back_substitution(A):
                         else:
                             result[solve] += "-" + str(A[i][j]) + str(result[j])
                     else:
-                        result[solve] += str(result[j])
+                        result[solve] += "-" + str(result[j])
                 elif A[i][j] < 0:
                     if A[i][j] != -1:
                         if A[i][j] - int(A[i][j]) == 0:
@@ -135,31 +137,19 @@ F = [[1, 0, 2, 3, 4], [2, 0, -1, 5, 3], [3, 0, 4, 6, -2], [4, 0, 2, 7, 0]]
 G = [[1, 0, 0, 3], [2, 0, 0, 5], [3, 0, 0, 6], [4, 0, 0, 7]]
 H = [[1, 7, 1, 3, 0], [1, 7, -1, -2, -2], [2, 14,2, 7, 0], [6, 42, 3, 13, -3]]
 I = [[1, 2, 0, 0, 3, 0, 7], [0, 0, 1, 0, 6, 0, -5], [0, 0, 0, 1, -2, 4, 5]]
-#print(B)
-#Gauss_elimination(B)
-#print(B)
-#print(A)
-#Gauss_elimination(A)
-#print(A)
-#print(C)
-#Gauss_elimination(C)
-#print(C)
-#print(D)
-#Gauss_elimination(D)
-#print(D)
-#print(E)
-#Gauss_elimination(E)
-#print(E)
-#Gauss_elimination(E)
-#back_substitution(E)
+J = [[-1, 1, -1, 0, 1], [1, 1, 2, 0, 7]]
+K = [[-1, 1, -1, 0], [1, 1, 2, 0], [2, 1, 2, 3], [1, 5, 2, 4], [2, 2, 4, 0], [3, 3, 6, 0]]
+L = [[1,0,2,0,-1,0,1], [0,1,0,2,0,-1,-2], [-2,0,-3,0,1,0,-1], [0,-2,0,-3,0,1,1]]
+M = [[3,6,6,0,9,3],[-1,-2,-2,1,-4,1],[-3,-6,-6,2,-11,1]]
+N = [[1, -1, -2, -3],[2,-1,1,1],[1,1,1,4]]
 
 
-#print("Ma trận D ban đầu")
-#printMatrix(D)
-#Gauss_elimination(D)
-#print("Ma trận D sau khi đưa về dạng bậc thang rút gọn")
-#printMatrix(D)
-#back_substitution(D)
+print("Ma trận D ban đầu")
+printMatrix(D)
+Gauss_elimination(D)
+print("Ma trận D sau khi đưa về dạng bậc thang rút gọn")
+printMatrix(D)
+back_substitution(D)
 
 print("Ma trận E ban đầu")
 printMatrix(E)
@@ -183,5 +173,41 @@ printMatrix(A)
 back_substitution(A)
 
 
-printMatrix(I)
-back_substitution(I)
+#printMatrix(I)
+#back_substitution(I)
+
+
+print("Ma trận J ban đầu")
+printMatrix(J)
+Gauss_elimination(J)
+print("Ma trận J sau khi đưa về dạng bậc thang rút gọn")
+printMatrix(J)
+back_substitution(J)
+
+#print("Ma trận K ban đầu")
+#printMatrix(K)
+#Gauss_elimination(K)
+#print("Ma trận K sau khi đưa về dạng bậc thang rút gọn")
+#printMatrix(K)
+#back_substitution(K)
+
+#print("Ma trận L ban đầu")
+#printMatrix(L)
+#Gauss_elimination(L)
+#print("Ma trận L sau khi đưa về dạng bậc thang rút gọn")
+#printMatrix(L)
+#back_substitution(L)
+
+print("Ma trận M ban đầu")
+printMatrix(M)
+Gauss_elimination(M)
+print("Ma trận M sau khi đưa về dạng bậc thang rút gọn")
+printMatrix(M)
+back_substitution(M)
+
+#print("Ma trận N ban đầu")
+#printMatrix(N)
+#Gauss_elimination(N)
+#print("Ma trận N sau khi đưa về dạng bậc thang rút gọn")
+#printMatrix(N)
+#back_substitution(N)
